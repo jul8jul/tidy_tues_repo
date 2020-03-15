@@ -1,0 +1,48 @@
+---
+title: "Fourth Tidy Tuesday"
+author: "Julianne Gallagher"
+date: "3/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(usmap)
+```
+
+
+```{r}
+#read in data
+tuition_cost <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-10/tuition_cost.csv')
+head(tuition_cost)
+
+#Tidying Data 
+tuition_cost %>% 
+  #only for programs with length of 4 years 
+  filter(degree_length == "4 Year") %>% 
+  ## the mean by state 
+  group_by(state) %>% 
+  summarise(mean_tuition_in = mean(in_state_tuition)) %>% 
+ # there was one na dropped
+   drop_na() -> mean_tuition 
+
+mean_tuition
+```
+
+```{r}
+# data in map 
+plot_usmap(data = mean_tuition, values = "mean_tuition_in") +
+  # coloring of map & legend title 
+  scale_fill_continuous(type = "viridis", name = "Cost ($)") +
+  #legend on right side 
+  theme(legend.position = "right") + 
+  # title of figure 
+  labs(title = "Average In-State Tuition") -> map_tuition
+map_tuition
+
+#saved png image
+ggsave("tuition_map.png",map_tuition, height=4, width=6)
+
+```
+

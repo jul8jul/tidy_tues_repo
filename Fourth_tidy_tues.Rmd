@@ -45,4 +45,4 @@ map_tuition
 ggsave("tuition_map.png",map_tuition, height=4, width=6)
 
 ```
-
+#####This tidy tuesday I learned how to use usmap to vizualize In-State tuition means across the country. Overall this was very difficult at first for me because I tried so many things originally, but I finally found a simple way to put the data on the map of the United States. ###
